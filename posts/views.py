@@ -3,4 +3,4 @@ from django.shortcuts import render
 # Create your views here.
 
 def list(request):
-    pass
+    return render(request, 'posts/list.html')
