@@ -4,7 +4,9 @@
 {% block body %}
     <form action="" method='post' enctype="multipart/form-data" accept="image/*">
         {% csrf_token %}
-        {% bootstrap_form form %}
+        {% bootstrap_form post_form %}
+        {% bootstrap_form image_form %}
+
         <input type="submit" />
     </form>
     
