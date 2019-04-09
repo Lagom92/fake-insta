@@ -44,13 +44,13 @@ def create(request):
 def update(request, id):
     post = Post.objects.get(id=id)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
+        post_form = PostForm(request.POST, instance=post)
+        if post_form.is_valid():
+            post_form.save()
             return redirect("posts:list")
     else:
-        form = PostForm(instance=post)
-    return render(request, 'posts/form.html', {'form':form})
+        post_form = PostForm(instance=post)
+    return render(request, 'posts/form.html', {'post_form':post_form})
     
 def delete(request, id):
     post = Post.objects.get(id=id)
