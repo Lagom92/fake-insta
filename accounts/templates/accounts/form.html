@@ -2,11 +2,16 @@
 {% load bootstrap4 %}
 
 {% block body %}
+    {% if request.resolver_match.url_name == 'signup' %}
+        <h1>Signup</h1>
+    {% else %}
+        <h1>Login</h1>
+    {% endif %}
+    <hr>
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         <input type="submit" />
     </form>
-
 
 {% endblock %}
