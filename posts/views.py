@@ -23,7 +23,9 @@ def create(request):
         # 11. 6번과 동일
         if post_form.is_valid():
             # 12. 적절한 데이터가 들어온다. 데이터를 저장하고 list페이지로 redirect !!
-            post = post_form.save()
+            post = post_form.save(commit=False)
+            post.user = request.user
+            post.save()
             for image in request.FILES.getlist('file'):
                 request.FILES['file'] = image
                 image_form = ImageForm(request.POST, request.FILES)
@@ -43,18 +45,23 @@ def create(request):
     # 8. 사용자가 입력한 데이터는 form에 담아진 상태로 다시 form을 담아서 create.html을 보내준다.
     return render(request, 'posts/form.html', {'post_form':post_form, 'image_form':image_form})
 
+
 # create 와 update 는 거의 비슷함
+@login_required
 def update(request, id):
     post = Post.objects.get(id=id)
-    if request.method == "POST":
-        post_form = PostForm(request.POST, instance=post)
-        if post_form.is_valid():
-            post_form.save()
-            return redirect("posts:list")
+    if post.user == request.user:
+        if request.method == "POST":
+            post_form = PostForm(request.POST, instance=post)
+            if post_form.is_valid():
+                post_form.save()
+                return redirect("posts:list")
+        else:
+            post_form = PostForm(instance=post)
+        return render(request, 'posts/form.html', {'post_form':post_form})
     else:
-        post_form = PostForm(instance=post)
-    return render(request, 'posts/form.html', {'post_form':post_form})
-    
+        return redirect("posts:list")
+        
 def delete(request, id):
     post = Post.objects.get(id=id)
     post.delete()

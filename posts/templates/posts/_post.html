@@ -1,4 +1,7 @@
-<div class="card" >
+<div class="card my-5" >
+  <div class="card-header">
+    <h5 class="card-text">{{post.user}}</h5>
+  </div>
   {% if post.image_set %}
   
     <div id="post{{post.id}}" class="carousel slide" data-ride="carousel">
@@ -8,7 +11,6 @@
             <img src="{{image.file.url}}" class="d-block w-100" alt="...">
           </div>
         {% endfor %}
-        
         
       </div>
       <a class="carousel-control-prev" href="#post{{post.id}}" role="button" data-slide="prev">
@@ -23,15 +25,16 @@
   
     <!--<img src="{{post.image.url}}" class="card-img-top" alt="...">-->
 
-  
   {% else %}
       <img src="..." class="card-img-top" alt="...">
 
-  
   {% endif %}
     <div class="card-body">
-      <p class="card-text">{{post.content}}</p>
+      <p class="card-text"><p class="font-weight-bold">{{post.user}}</p> <hr> {{post.content}}</p>
+      {% if post.user == user %}
       <a href = "{% url 'posts:update' post.id %}" class="btn btn-warning">수정</a>
       <a href = "{% url 'posts:delete' post.id %}" class="btn btn-danger">삭제</a>
+      {% endif %}
     </div>
 </div>
+        
