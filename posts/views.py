@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import PostForm, ImageForm, CommentForm
-from .models import Post, Image
+from .models import Post, Image, Comment
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 # Create your views here.
 
 def list(request):
@@ -77,7 +78,8 @@ def delete(request, id):
     return redirect("posts:list")
     
 @login_required
-def comment_create(request, post_id):
+@require_POST
+def comment_create(request, post_id,):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
@@ -86,5 +88,12 @@ def comment_create(request, post_id):
             comment.post = Post.objects.get(id=post_id)
             comment.save()
     return redirect('posts:list')
+    
+@login_required
+def comment_delete(request, post_id, comment_id):
+    comment = Comment.objects.get(id=comment_id)
+    if comment.user == request.user:
+        comment.delete()
+    return redirect("posts:list")
  
     
