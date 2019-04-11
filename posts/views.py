@@ -95,5 +95,3 @@ def comment_delete(request, post_id, comment_id):
     if comment.user == request.user:
         comment.delete()
     return redirect("posts:list")
- 
-    
