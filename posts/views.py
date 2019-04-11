@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
-from .forms import PostForm, ImageForm
+from .forms import PostForm, ImageForm, CommentForm
 from .models import Post, Image
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def list(request):
-    posts = Post.objects.all()    
-    return render(request, 'posts/list.html', {'posts':posts})
+    posts = Post.objects.all()
+    posts = reversed(posts)
+    # posts = posts[::-1]
+    
+    comment_form = CommentForm()
+    return render(request, 'posts/list.html', {'posts':posts, 'comment_form':comment_form})
     
 # 데코레이터 @
 @login_required
@@ -62,9 +66,25 @@ def update(request, id):
     else:
         return redirect("posts:list")
         
+@login_required
 def delete(request, id):
     post = Post.objects.get(id=id)
-    post.delete()
+    if post.user == request.user:
+        post.delete()
+    else:
+        pass
     
     return redirect("posts:list")
+    
+@login_required
+def comment_create(request, post_id):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.post = Post.objects.get(id=post_id)
+            comment.save()
+    return redirect('posts:list')
+ 
     

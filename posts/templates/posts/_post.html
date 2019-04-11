@@ -25,6 +25,7 @@
   
     <!--<img src="{{post.image.url}}" class="card-img-top" alt="...">-->
 
+  
   {% else %}
       <img src="..." class="card-img-top" alt="...">
 
@@ -35,6 +36,14 @@
       <a href = "{% url 'posts:update' post.id %}" class="btn btn-warning">수정</a>
       <a href = "{% url 'posts:delete' post.id %}" class="btn btn-danger">삭제</a>
       {% endif %}
+    </div>
+    <hr>
+    <div class="card-body">
+      <form action="{% url 'posts:comment_create' post.id %}" method='post'>
+        {% csrf_token %}
+        {{ comment_form.content }}
+        <input type="submit" />
+    </form>
     </div>
 </div>
         
