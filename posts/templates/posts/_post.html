@@ -31,7 +31,14 @@
 
   {% endif %}
     <div class="card-body">
-      <p class="card-text"><p class="font-weight-bold">{{post.user}}</p> <hr> {{post.content}}</p>
+      <!--like 버튼-->
+      {% if %}
+      <a href="{% url 'posts:like' post.id %}">좋아요</a>
+      {% else %}
+      <a href="{% url 'posts:like' post.id %}">좋아요_취소</a>
+      {% endif %}
+      <!--//like 버튼-->
+      <p class="card-text"><p class="font-weight-bold">{{post.user}}</p>  {{post.content}}</p>
       {% if post.user == user %}
       <a href = "{% url 'posts:update' post.id %}" class="btn btn-warning">수정</a>
       <a href = "{% url 'posts:delete' post.id %}" class="btn btn-danger">삭제</a>
@@ -41,7 +48,7 @@
     <!--댓글을 보여주는 부분-->
     <div class="card-body">
       {% for comment in post.comment_set.all %}
-        <p class="card-test"><strong>{{comment.user}}</strong> {{comment.content}}</p>
+        <p class="card-test "><strong>{{comment.user}}</strong> {{comment.content}}</p>
         {% if comment.user == user %}
         <a href="{% url 'posts:comment_delete' post.id comment.id %}" class="badge badge-danger">삭제</a>
         {% endif %}
@@ -49,7 +56,7 @@
         <p class="card-test">댓글이 없습니다.</p>
       {% endfor %}
     </div>
-    
+    <!--//댓글을 보여주는 부분-->
     
     <div class="card-body">
       <form action="{% url 'posts:comment_create' post.id %}" method='post'>
