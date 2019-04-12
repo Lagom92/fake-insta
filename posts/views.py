@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import PostForm, ImageForm, CommentForm
-from .models import Post, Image, Comment, Like
+from .models import Post, Image, Comment
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 # Create your views here.
@@ -100,19 +100,37 @@ def comment_delete(request, post_id, comment_id):
 def like(request, post_id):
     user = request.user
     post = Post.objects.get(id=post_id)
-    likes = post.like_set.all()
-    check = 0
-    for like in likes:
-        if user == like.user:
-            check = 1
-            like_post = like
-        
-    if check == 1:
-        like_post.delete()
+    
+    # if 사용자 in 좋아요목록
+    if user in post.likes.all():
+        post.likes.remove(user)
     else:
-        like = Like(user=user, post=post)
-        like.save()
-        
+        # 사용자가 좋아요를 누르지 않았다면
+        post.likes.add(user)
     return redirect("posts:list")
+
+
+
+
+
+
+
+
+    # user = request.user
+    # post = Post.objects.get(id=post_id)
+    # likes = post.like_set.all()
+    # check = 0
+    # for like in likes:
+    #     if user == like.user:
+    #         check = 1
+    #         like_post = like
+        
+    # if check == 1:
+    #     like_post.delete()
+    # else:
+    #     like = Like(user=user, post=post)
+    #     like.save()
+        
+    # return redirect("posts:list")
     
     

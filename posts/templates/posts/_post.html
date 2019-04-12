@@ -32,10 +32,10 @@
   {% endif %}
     <div class="card-body">
       <!--like 버튼-->
-      {% if %}
-      <a href="{% url 'posts:like' post.id %}">좋아요</a>
-      {% else %}
+      {% if user in post.likes.all %}
       <a href="{% url 'posts:like' post.id %}">좋아요_취소</a>
+      {% else %}
+      <a href="{% url 'posts:like' post.id %}">좋아요</a>
       {% endif %}
       <!--//like 버튼-->
       <p class="card-text"><p class="font-weight-bold">{{post.user}}</p>  {{post.content}}</p>
