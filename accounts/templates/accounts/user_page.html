@@ -10,17 +10,23 @@
             <!--프로필 이미지-->
         </div>
         <div class="col-8">
+            <div class="row">
             <!--유저 정보-->
-            <h1>{{user_info.username}}</h1>
+            <h4>{{user_info.username}}</h4> 
             <!--follow-->
-            {% if user_info in user.followings.all %}
-            <a href = "{% url 'accounts:follow' user_info.id %}" class="btn btn-danger">Follow</a>
-            {% else %}
-            <a href = "{% url 'accounts:follow' user_info.id %}" class="btn btn-primary">Follow</a>
+            {% if user != user_info %}
+                {% if user_info in user.followings.all %}
+                <a href = "{% url 'accounts:follow' user_info.id %}" class="btn btn-light">팔로잉</a>
+                {% else %}
+                <a href = "{% url 'accounts:follow' user_info.id %}" class="btn btn-primary">팔로우</a>
+                {% endif %}
             {% endif %}
+            <br>
+            <p class="card-text">팔로잉 {{user_info.followings.count}}개    팔로워 {{user_info.followers.count}}개</p>
+
+            </div>
         </div>
     </div>
-    
     <!--사용자 정보 출력 끝-->
     <!--작성글 출력 시작-->
     <div class="card-columns">
