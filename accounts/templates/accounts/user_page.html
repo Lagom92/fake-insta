@@ -2,36 +2,44 @@
 
 {% block body %}
 
-    <h1>User_page</h1>
-    <hr>
     <!--사용자 정보 출력 시작-->
-    <div class='row'>
+    <div class="row my-5">
         <div class="col-4">
-            <!--프로필 이미지-->
+            <!--프로필이미지-->
+            <img src="https://cdn.gsmarena.com/imgroot/news/18/03/instagram-timeline-changes/-728/gsmarena_001.jpg" style="max-width: 100%; height: auto;" alt="instagram">
         </div>
-        <div class="col-8">
-            <div class="row">
+        <div class="col-6">
             <!--유저 정보-->
-            <h4>{{user_info.username}}</h4> 
-            <!--follow-->
-            {% if user != user_info %}
-                {% if user_info in user.followings.all %}
-                <a href = "{% url 'accounts:follow' user_info.id %}" class="btn btn-light">팔로잉</a>
-                {% else %}
-                <a href = "{% url 'accounts:follow' user_info.id %}" class="btn btn-primary">팔로우</a>
+            <div class="row d-flex align-items-center">
+                <h3>{{user_info.username}} &nbsp; </h3>
+                {% if user != user_info %}
+                    {% if user_info in user.followings.all %}
+                        <a href="{% url 'accounts:follow' user_info.id %}" class="btn btn-outline-dark btn-sm">팔로잉</a>
+                    {% else %}
+                        <a href="{% url 'accounts:follow' user_info.id %}" class="btn btn-primary btn-sm">팔로우</a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            </div>
             <br>
-            <p class="card-text">팔로잉 {{user_info.followings.count}}개    팔로워 {{user_info.followers.count}}개</p>
-
+            <div class="row d-flex justify-content-start">
+                <h5 class="mr-3">게시물 : {{user_info.post_set.count}}</h5>
+                <h5 class="mr-3">팔로잉 : {{user_info.followings.count}}</h5>
+                <h5 class="mr-3">팔로워 : {{user_info.followers.count}}</h5>
+            </div>
+            <br>
+            <div class="row">
+                <br>
+                <p>user의 정보들....</p>
             </div>
         </div>
     </div>
+    
     <!--사용자 정보 출력 끝-->
     <!--작성글 출력 시작-->
+    <hr>
     <div class="card-columns">
         {% for post in user_info.post_set.all %}
-            {% include 'posts/_post.html' %}
+            {% include 'posts/_user.html' %}
         {% endfor %}    
     </div>
     <!--작성글 출력 끝-->
