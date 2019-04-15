@@ -40,3 +40,20 @@ def user_page(request, id):
     User = get_user_model()
     user_info = User.objects.get(id=id)
     return render(request, "accounts/user_page.html", {"user_info":user_info})
+    
+def follow(request, id):
+    # 로그인한 사람 
+    me = request.user
+    # 팔로우를 하려는 사람
+    User = get_user_model()
+    you = User.objects.get(id=id)
+    
+    if me != you:
+        if you in me.followings.all():
+            # 취소
+            me.followings.remove(you)
+        else:
+            # 추가
+            me.followings.add(you)
+    
+    return redirect("accounts:user_page", id)
