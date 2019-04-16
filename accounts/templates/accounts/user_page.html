@@ -4,9 +4,13 @@
 
     <!--사용자 정보 출력 시작-->
     <div class="row my-5">
-        <div class="col-4">
+        <div class="col-4 d-flex justify-content-end">
             <!--프로필이미지-->
-            <img src="https://cdn.gsmarena.com/imgroot/news/18/03/instagram-timeline-changes/-728/gsmarena_001.jpg" style="max-width: 100%; height: auto;" alt="instagram">
+            {% if user_info.profile_image %}
+                <img src="{{user_info.profile_image.url}}"  class="rounded-circle"/>
+            {% else %}
+                <img src="https://images.vexels.com/media/users/3/147098/isolated/lists/931095c4442a6b69f717233f80aa0a68-instagram-photo-button.png" class="rounded-circle" width=150px height=150px />
+            {% endif %}
         </div>
         <div class="col-6">
             <!--유저 정보-->
@@ -29,7 +33,7 @@
             <br>
             <div class="row">
                 <br>
-                <p>user의 정보들....</p>
+                <p>{{user_info.introduce}}</p>
                 {% if user == user_info %}
                     <hr><a href="{% url 'accounts:edit_profile' user_info.id %}" class="btn btn-light btn-sm">프로필 수정</a>
                 {% endif %}

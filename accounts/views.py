@@ -68,11 +68,11 @@ def edit_profile(request, id):
     User = get_user_model()
     user = User.objects.get(id=id)
     if me == user:
-    
         if request.method == "POST":
-            form = CustomUserChangeForm(request.POST, instance=user)
+            form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
             if form.is_valid():
                 form.save()
+                
                 return redirect("accounts:user_page", id)
         else:
             form = CustomUserChangeForm(instance=user)
