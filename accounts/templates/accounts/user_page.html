@@ -30,6 +30,9 @@
             <div class="row">
                 <br>
                 <p>user의 정보들....</p>
+                {% if user == user_info %}
+                    <hr><a href="{% url 'accounts:edit_profile' user_info.id %}" class="btn btn-light btn-sm">프로필 수정</a>
+                {% endif %}
             </div>
         </div>
     </div>
