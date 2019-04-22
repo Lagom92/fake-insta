@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load socialaccount %}
 
 {% block body %}
     {% if request.resolver_match.url_name == 'signup' %}
@@ -15,5 +16,9 @@
         {% bootstrap_form form %}
         <input type="submit" />
     </form>
+    {% if request.resolver_match.url_name == 'login' %}
+        <br>
+        <a href="{% provider_login_url 'kakao' method='oauth2' %}"><img src="http://hanjocollection.com/img/login/k.jpg" width="200"/></a>
+    {% endif %}
 
 {% endblock %}
