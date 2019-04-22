@@ -1,3 +1,5 @@
+{% load posts_templatetag %}
+
 <div class="card my-5" >
   <div class="card-header">
     <h5 class="card-text"> <a href={% url 'accounts:user_page' post.user.id %} style="color:black">{{post.user}}</a></h5>
@@ -38,7 +40,7 @@
       <a href="{% url 'posts:like' post.id %}"><i class="fas fa-heart-broken" style="color:black"></i></a>
       {% endif %}
       <!--//like 버튼-->
-      <p class="card-text"><p class="font-weight-bold">{{post.user}}</p>  {{post.content}}</p>
+      <p class="card-text"><p class="font-weight-bold">{{post.user}}</p>  {{post|hashtag_link|safe}}</p>
       <p class="card-text">좋아요 {{post.likes.count}}개</p>
       {% if post.user == user %}
       <a href = "{% url 'posts:update' post.id %}" class="btn btn-warning">수정</a>
